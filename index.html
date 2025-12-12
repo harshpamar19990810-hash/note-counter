@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Indian Currency Note Calculator - Improved Layout</title>
+
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Manifest (PWA config) -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#4f46e5" />
+
+  <!-- App Icons (optional for Android splash screen) -->
+  <link rel="icon" sizes="192x192" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+</head>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .calculator-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+        .note-input {
+            transition: all 0.3s ease;
+        }
+        .note-input:focus-within {
+            transform: translateY(-2px);
+        }
+        .reset-btn {
+            transition: all 0.3s ease;
+        }
+        .reset-btn:hover {
+            transform: translateY(-2px);
+        }
+        .result-container {
+            transition: all 0.5s ease;
+        }
+        .currency-icon {
+            background: linear-gradient(145deg, #e6e6e6, #f0f0f0);
+            width: 50px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-weight: 700;
+            color: #555;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }
+        .result-animation {
+            transition: all 0.5s ease;
+        }
+        .subtotal {
+            opacity: 0;
+            min-width: 0;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .subtotal.show {
+            opacity: 1;
+            min-width: 100px;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="py-8 px-4">
+    <div class="calculator-container">
+        <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">Currency Note Calculator</h1>
+        <p class="text-gray-600 text-center mb-8">Calculate the total amount of your Indian currency notes in real-time</p>
+        
+        <form id="calculatorForm" class="space-y-6">
+            <!-- ₹500 Note -->
+            <div class="note-input flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                <div class="currency-icon flex-shrink-0">₹500</div>
+                <div class="flex-grow">
+                    <label for="note500" class="block text-sm font-medium text-gray-700 mb-1">Number of ₹500 notes</label>
+                    <div class="flex items-center space-x-3">
+                        <input type="number" id="note500" min="0" value="0" class="w-full md:w-2/3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                        <div id="subtotal500" class="subtotal text-base font-medium text-indigo-600 ml-2 md:ml-4 whitespace-nowrap"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ₹200 Note -->
+            <div class="note-input flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                <div class="currency-icon flex-shrink-0">₹200</div>
+                <div class="flex-grow">
+                    <label for="note200" class="block text-sm font-medium text-gray-700 mb-1">Number of ₹200 notes</label>
+                    <div class="flex items-center space-x-3">
+                        <input type="number" id="note200" min="0" value="0" class="w-full md:w-2/3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                        <div id="subtotal200" class="subtotal text-base font-medium text-indigo-600 ml-2 md:ml-4 whitespace-nowrap"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ₹100 Note -->
+            <div class="note-input flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                <div class="currency-icon flex-shrink-0">₹100</div>
+                <div class="flex-grow">
+                    <label for="note100" class="block text-sm font-medium text-gray-700 mb-1">Number of ₹100 notes</label>
+                    <div class="flex items-center space-x-3">
+                        <input type="number" id="note100" min="0" value="0" class="w-full md:w-2/3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                        <div id="subtotal100" class="subtotal text-base font-medium text-indigo-600 ml-2 md:ml-4 whitespace-nowrap"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ₹50 Note -->
+            <div class="note-input flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                <div class="currency-icon flex-shrink-0">₹50</div>
+                <div class="flex-grow">
+                    <label for="note50" class="block text-sm font-medium text-gray-700 mb-1">Number of ₹50 notes</label>
+                    <div class="flex items-center space-x-3">
+                        <input type="number" id="note50" min="0" value="0" class="w-full md:w-2/3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                        <div id="subtotal50" class="subtotal text-base font-medium text-indigo-600 ml-2 md:ml-4 whitespace-nowrap"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ₹20 Note -->
+            <div class="note-input flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                <div class="currency-icon flex-shrink-0">₹20</div>
+                <div class="flex-grow">
+                    <label for="note20" class="block text-sm font-medium text-gray-700 mb-1">Number of ₹20 notes</label>
+                    <div class="flex items-center space-x-3">
+                        <input type="number" id="note20" min="0" value="0" class="w-full md:w-2/3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                        <div id="subtotal20" class="subtotal text-base font-medium text-indigo-600 ml-2 md:ml-4 whitespace-nowrap"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ₹10 Note -->
+            <div class="note-input flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                <div class="currency-icon flex-shrink-0">₹10</div>
+                <div class="flex-grow">
+                    <label for="note10" class="block text-sm font-medium text-gray-700 mb-1">Number of ₹10 notes</label>
+                    <div class="flex items-center space-x-3">
+                        <input type="number" id="note10" min="0" value="0" class="w-full md:w-2/3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                        <div id="subtotal10" class="subtotal text-base font-medium text-indigo-600 ml-2 md:ml-4 whitespace-nowrap"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reset Button -->
+            <div class="flex space-x-4 pt-4">
+                <button type="button" id="resetBtn" class="reset-btn w-full bg-gray-200 text-gray-800 py-3 px-6 rounded-lg font-medium hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                    Reset
+                </button>
+                <div class="flex items-center space-x-3">
+                    <div class="text-4xl font-bold text-indigo-600 mb-4 totalAmount" id="totalAmount">₹0</div>
+                </div>
+            </div>
+        </form>
+        
+        <!-- Result Container -->
+        <div id="resultContainer" class="result-container mt-8 bg-gray-50 rounded-lg p-6">
+            <div class="flex flex-col items-center result-animation" id="resultAnimation">
+                <p class="text-xl text-gray-700 mb-2 font-medium">Total Amount:</p>
+                <div class="text-4xl font-bold text-indigo-600 mb-4 totalAmount" id="totalAmount2">₹0</div>
+                
+                <div class="w-full mt-4">
+                    <p class="text-lg text-gray-700 font-medium mb-2">Breakdown:</p>
+                    <div class="p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+                        <div class="text-md text-gray-700" id="breakdown"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-8 text-center text-sm text-gray-500">
+            <p>Made with ❤️ for quick and easy currency calculations</p>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const resetBtn = document.getElementById('resetBtn');
+        const totalAmountEls = document.querySelectorAll('.totalAmount');
+        const breakdownEl = document.getElementById('breakdown');
+
+        const inputFields = [
+            { id: 'note500', value: 500 },
+            { id: 'note200', value: 200 },
+            { id: 'note100', value: 100 },
+            { id: 'note50', value: 50 },
+            { id: 'note20', value: 20 },
+            { id: 'note10', value: 10 }
+        ];
+
+        function calculateTotal() {
+            let total = 0;
+            let breakdown = [];
+
+            inputFields.forEach(field => {
+                const input = document.getElementById(field.id);
+                let count = parseInt(input.value);
+
+                if (isNaN(count) || count < 0) count = 0;
+
+                const subtotal = count * field.value;
+                const subtotalEl = document.getElementById('subtotal' + field.value);
+
+                if (count > 0) {
+                    subtotalEl.textContent = `= ₹${subtotal.toLocaleString('en-IN')}`;
+                    subtotalEl.classList.add('show');
+                    breakdown.push(`${count} × ₹${field.value} = ₹${subtotal.toLocaleString('en-IN')}`);
+                } else {
+                    subtotalEl.textContent = '';
+                    subtotalEl.classList.remove('show');
+                }
+
+                total += subtotal;
+            });
+
+            // Update total amount at all places with the class "totalAmount"
+            totalAmountEls.forEach(el => {
+                el.textContent = `₹${total.toLocaleString('en-IN')}`;
+            });
+
+            breakdownEl.innerHTML = breakdown.length > 0 ? breakdown.join('<br>') : 'No notes entered';
+        }
+
+        inputFields.forEach(field => {
+            const input = document.getElementById(field.id);
+
+            // Auto select on focus
+            input.addEventListener('focus', () => {
+                input.select();
+            });
+
+            // Validate and update total on input
+            input.addEventListener('input', () => {
+                // Prevent negative and non-integers
+                if (input.value === '' || isNaN(input.value) || parseInt(input.value) < 0) {
+                    input.value = 0;
+                } else {
+                    input.value = Math.floor(parseFloat(input.value));
+                }
+                calculateTotal();
+            });
+        });
+
+        resetBtn.addEventListener('click', () => {
+            inputFields.forEach(field => {
+                const input = document.getElementById(field.id);
+                input.value = 0;
+
+                const subtotalEl = document.getElementById('subtotal' + field.value);
+                subtotalEl.textContent = '';
+                subtotalEl.classList.remove('show');
+            });
+
+            totalAmountEls.forEach(el => {
+                el.textContent = '₹0';
+            });
+
+            breakdownEl.innerHTML = 'No notes entered';
+        });
+
+        // Initial calculation on page load
+        calculateTotal();
+    });
+      if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(reg => console.log('Service Worker Registered ✅'))
+      .catch(err => console.error('Service Worker registration failed ❌:', err));
+  }
+    </script>
+</body>
+</html>
